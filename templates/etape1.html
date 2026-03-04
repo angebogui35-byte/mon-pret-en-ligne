@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Étape 1 | Informations Personnelles</title>
+    <title>Étape 1 | Localisation</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -11,7 +11,6 @@
         .glass-form { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 30px; padding: 40px; width: 100%; max-width: 600px; margin: auto; }
         .progress-bar { background: linear-gradient(90deg, #00ff88, #00bdff); }
         .form-control { background: rgba(255,255,255,0.05) !important; border: 1px solid rgba(255,255,255,0.1) !important; color: white !important; padding: 12px 15px !important; border-radius: 12px !important; }
-        .form-control::placeholder { color: rgba(255,255,255,0.3); }
         label { color: #94a3b8; font-size: 0.85rem; margin-bottom: 5px; margin-left: 5px; display: block; }
         .btn-next { background: #00ff88; color: #000; font-weight: 800; padding: 15px; border-radius: 15px; width: 100%; border: none; transition: 0.3s; margin-top: 20px; }
         .btn-next:disabled { background: #1e293b; color: #475569; cursor: not-allowed; }
@@ -23,81 +22,55 @@
     <div class="glass-form">
         <div class="progress-container mb-4">
             <div class="d-flex justify-content-between mb-2 small fw-bold text-uppercase">
-                <span class="text-success">Identité</span>
+                <span class="text-success">Identité & Lieu</span>
                 <span class="text-secondary">Étape 1/3</span>
             </div>
-            <div class="progress" style="height: 6px; background: rgba(255,255,255,0.1);">
-                <div class="progress-bar" style="width: 33%"></div>
-            </div>
+            <div class="progress" style="height: 6px; background: rgba(255,255,255,0.1);"><div class="progress-bar" style="width: 33%"></div></div>
         </div>
-
-        <h4 class="mb-4 fw-bold"><i class="fas fa-user-edit me-2 text-success"></i>Vos Informations</h4>
 
         <form action="/etape2" method="POST" id="formIdentite">
             <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label>Nom</label>
-                    <input type="text" name="nom" class="form-control" placeholder="Ex: YAO" required>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label>Prénom(s)</label>
-                    <input type="text" name="prenom" class="form-control" placeholder="Ex: Jean-Marc" required>
-                </div>
+                <div class="col-md-6 mb-3"><label>Nom</label><input type="text" name="nom" class="form-control" placeholder="Ex: KOFFI" required></div>
+                <div class="col-md-6 mb-3"><label>Prénom(s)</label><input type="text" name="prenom" class="form-control" placeholder="Ex: Kouassi" required></div>
             </div>
 
             <div class="mb-3">
                 <label>Date de naissance</label>
                 <input type="date" name="date_naissance" id="date_naissance" class="form-control" required onchange="verifierAge()">
-                <div id="ageError" class="text-danger small mt-1" style="display:none;">
-                    <i class="fas fa-exclamation-circle"></i> Vous devez avoir au moins 18 ans pour continuer.
-                </div>
+                <div id="ageError" class="text-danger small mt-1" style="display:none;"><i class="fas fa-exclamation-circle"></i> Minimum 18 ans requis.</div>
             </div>
 
             <div class="mb-3">
-                <label>Ville de résidence (Côte d'Ivoire)</label>
-                <input list="villes" name="lieu" class="form-control" placeholder="Tapez pour rechercher une ville..." required>
+                <label>Ville ou Commune de résidence</label>
+                <input list="villes" name="lieu" class="form-control" placeholder="Tapez le nom de votre ville..." required>
                 <datalist id="villes">
-                    <option value="Abidjan">
-                    <option value="Yamoussoukro">
-                    <option value="Bouaké">
-                    <option value="San-Pédro">
-                    <option value="Daloa">
+                    <option value="Abidjan - Abobo"><option value="Abidjan - Adjamé"><option value="Abidjan - Attécoubé"><option value="Abidjan - Cocody">
+                    <option value="Abidjan - Koumassi"><option value="Abidjan - Marcory"><option value="Abidjan - Plateau"><option value="Abidjan - Port-Bouët">
+                    <option value="Abidjan - Treichville"><option value="Abidjan - Yopougon"><option value="Anyama"><option value="Bingerville"><option value="Grand-Bassam">
+                    <option value="Yamoussoukro"><option value="Toumodi">
+                    <option value="Agboville"><option value="Adzopé"><option value="Abengourou"><option value="Aboisso"><option value="Bondoukou"><option value="Bouna">
+                    <option value="Bouaké"><option value="Béoumi"><option value="Katiola"><option value="Korhogo"><option value="Ferkessédougou"><option value="Odiénné"><option value="Boundiali">
+                    <option value="Daloa"><option value="Bouaflé"><option value="Sinfra"><option value="Gagnoa"><option value="Divo"><option value="Soubré">
+                    <option value="San-Pédro"><option value="Man"><option value="Guiglo"><option value="Duékoué"><option value="Sassandra"><option value="Tabou">
+                    <option value="Daoukro"><option value="M'Bahiakro"><option value="Bongouanou"><option value="Vavoua"><option value="Issia"><option value="Lakota">
                 </datalist>
             </div>
 
             <button type="submit" id="submitBtn" class="btn-next" disabled>SUIVANT</button>
         </form>
-        </div>
+    </div>
 </div>
 
 <script>
     function verifierAge() {
-        const dateNaissance = document.getElementById('date_naissance').value;
+        const dateN = document.getElementById('date_naissance').value;
         const btn = document.getElementById('submitBtn');
-        const errorMsg = document.getElementById('ageError');
-
-        if (!dateNaissance) return;
-
-        const aujourdhui = new Date();
-        const naissance = new Date(dateNaissance);
-        let age = aujourdhui.getFullYear() - naissance.getFullYear();
-        const m = aujourdhui.getMonth() - naissance.getMonth();
-
-        if (m < 0 || (m === 0 && aujourdhui.getDate() < naissance.getDate())) {
-            age--;
-        }
-
-        if (age >= 18) {
-            btn.disabled = false;
-            errorMsg.style.display = 'none';
-            document.getElementById('date_naissance').style.borderColor = '#00ff88';
-        } else {
-            btn.disabled = true;
-            errorMsg.style.display = 'block';
-            document.getElementById('date_naissance').style.borderColor = '#ff4b2b';
-        }
+        const err = document.getElementById('ageError');
+        if(!dateN) return;
+        const age = Math.floor((new Date() - new Date(dateN)) / 31557600000);
+        if (age >= 18) { btn.disabled = false; err.style.display = 'none'; } 
+        else { btn.disabled = true; err.style.display = 'block'; }
     }
 </script>
-
 </body>
 </html>
