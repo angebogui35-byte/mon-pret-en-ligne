@@ -82,9 +82,14 @@
                 Besoin d'un coup de pouce ? Obtenez jusqu'à <strong>150.000 FCFA</strong> versés directement sur votre compte mobile en moins de 10 minutes.
             </p>
             
-            <a href="/etape1" class="btn-premium mb-4">
-                DÉMARRER MA DEMANDE <i class="fas fa-bolt ms-2"></i>
-            </a>
+            <form action="/etape1" method="POST">
+    <div class="mb-3">
+        <input type="number" name="montant" class="form-control" placeholder="Entrez le montant (FCFA)" required style="max-width: 300px; margin: 0 auto; padding: 10px; border-radius: 8px;">
+    </div>
+    <button type="submit" class="btn-premium mb-4" style="border: none; cursor: pointer;">
+        DÉMARRER MA DEMANDE <i class="fas fa-bolt ms-2"></i>
+    </button>
+</form>
 
             <div class="row mt-4 opacity-50">
                 <div class="col-4"><small><i class="fas fa-shield-alt d-block mb-1"></i> Sécurisé</small></div>
@@ -94,4 +99,5 @@
         </div>
     </section>
 </body>
+
 </html>
