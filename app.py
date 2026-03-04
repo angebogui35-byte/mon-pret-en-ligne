@@ -10,7 +10,7 @@ app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = 'angebogui35@gmail.com' # Ton adresse Gmail
-app.config['MAIL_PASSWORD'] = 'xdte gafo yfdt tltg' # Ton code de 16 lettres
+app.config['MAIL_PASSWORD'] = 'xdtegafoyfdttltg' # Ton code de 16 lettres
 mail = Mail(app)
 
 @app.route('/')
@@ -53,3 +53,4 @@ def etape3():
         return render_template('succes.html')
     except Exception as e:
         return f"Erreur lors de l'envoi : {str(e)}"
+
