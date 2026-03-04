@@ -3,14 +3,14 @@ from flask_mail import Mail, Message
 import os
 
 app = Flask(__name__)
-app.secret_key = 'une_cle_secrete_tres_longue_et_aleatoire'
+app.secret_key = 'une_cle_secrete_au_choix_123'
 
 # --- CONFIGURATION EMAIL ---
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'TON_EMAIL@gmail.com' # Remplace par ton Gmail
-app.config['MAIL_PASSWORD'] = 'TON_CODE_16_LETTRES' # Ton mot de passe d'application Google
+app.config['MAIL_USERNAME'] = 'angebogui35@gmail.com' # Ton adresse Gmail
+app.config['MAIL_PASSWORD'] = 'xdte gafo yfdt tltg' # Ton code de 16 lettres
 mail = Mail(app)
 
 @app.route('/')
@@ -32,18 +32,18 @@ def etape2():
 def etape3():
     session['telephone'] = request.form.get('telephone')
     
-    # Préparation du mail avec toutes les infos de la session
+    # Envoi de l'email avec les détails
     msg = Message("🚀 Nouvelle demande de prêt !",
                   sender=app.config['MAIL_USERNAME'],
-                  recipients=[app.config['MAIL_USERNAME']]) # Tu t'envoies le mail à toi-même
+                  recipients=[app.config['MAIL_USERNAME']])
     
     msg.body = f"""
-    Nouvelle demande reçue !
+    Une nouvelle demande a été soumise :
     
-    Nom : {session.get('nom')}
-    Prénom : {session.get('prenom')}
-    Montant demandé : {session.get('montant')} FCFA
-    Téléphone : {session.get('telephone')}
+    - Nom : {session.get('nom')}
+    - Prénom : {session.get('prenom')}
+    - Montant : {session.get('montant')} FCFA
+    - Téléphone : {session.get('telephone')}
     """
     
     try:
