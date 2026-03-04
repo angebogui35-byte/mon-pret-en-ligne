@@ -26,32 +26,30 @@ def etape1():
 def etape2():
     session['nom'] = request.form.get('nom')
     session['prenom'] = request.form.get('prenom')
+    session['lieu'] = request.form.get('lieu') # <--- AJOUTE CETTE LIGNE
     return render_template('etape2.html')
 
 @app.route('/etape3', methods=['POST'])
 def etape3():
+    # 1. On récupère le téléphone envoyé
     session['telephone'] = request.form.get('telephone')
     
-    # Envoi de l'email avec les détails
+    # 2. On prépare l'email avec toutes les infos stockées
     msg = Message("🚀 Nouvelle demande de prêt !",
                   sender=app.config['MAIL_USERNAME'],
                   recipients=[app.config['MAIL_USERNAME']])
     
     msg.body = f"""
-    Une nouvelle demande a été soumise :
-    
-    - Nom : {session.get('nom')}
-    - Prénom : {session.get('prenom')}
+    Nouvelle demande reçue :
+    - Client : {session.get('nom')} {session.get('prenom')}
+    - Ville : {session.get('lieu')}
     - Montant : {session.get('montant')} FCFA
-    - Téléphone : {session.get('telephone')}
+    - Contact : {session.get('telephone')}
     """
     
+    # 3. On envoie l'email
     try:
         mail.send(msg)
+        return render_template('succes.html')
     except Exception as e:
-        print(f"Erreur d'envoi : {e}")
-
-    return render_template('succes.html')
-
-if __name__ == '__main__':
-    app.run(debug=True)
+        return f"Erreur lors de l'envoi : {str(e)}"
