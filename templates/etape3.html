@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Étape 3 | Approbation du Prêt</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --primary: #00ff88; --secondary: #00bdff; --dark: #0f172a; }
+        body { background: var(--dark); color: white; min-height: 100vh; display: flex; align-items: center; font-family: 'Inter', sans-serif; }
+        
+        .glass-card { 
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); 
+            border-radius: 40px; padding: 50px 30px; width: 100%; max-width: 550px; 
+            margin: auto; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            position: relative; overflow: hidden;
+        }
+
+        /* Effet de lueur en arrière-plan */
+        .glow-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, rgba(0, 255, 136, 0.1) 0%, transparent 70%);
+            z-index: -1;
+        }
+
+        .success-icon {
+            font-size: 5rem; color: var(--primary);
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+            margin-bottom: 25px;
+        }
+
+        .status-badge {
+            background: rgba(0, 255, 136, 0.1); color: var(--primary);
+            padding: 8px 20px; border-radius: 50px; font-weight: 700;
+            font-size: 0.8rem; letter-spacing: 1px; border: 1px solid rgba(0, 255, 136, 0.2);
+            display: inline-block; margin-bottom: 20px;
+        }
+
+        .amount-display {
+            font-size: 3.5rem; font-weight: 900; 
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin: 15px 0;
+        }
+
+        .currency { color: var(--primary); -webkit-text-fill-color: var(--primary); }
+
+        .btn-withdraw {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #000; font-weight: 800; padding: 22px; border-radius: 20px;
+            width: 100%; border: none; font-size: 1.2rem; margin-top: 30px;
+            transition: all 0.4s ease; box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+            text-transform: uppercase;
+        }
+        .btn-withdraw:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0, 255, 136, 0.5); }
+
+        #loader-content { padding: 60px 0; }
+        #result-content { display: none; animation: fadeInUp 0.8s ease; }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="glass-card">
+            <div class="glow-bg"></div>
+
+            <div id="loader-content">
+                <div class="spinner-border text-primary mb-4" style="width: 4rem; height: 4rem; border-width: 6px;"></div>
+                <h3 class="fw-bold">ANALYSE FINALE...</h3>
+                <p class="text-secondary">Validation de votre éligibilité en cours</p>
+            </div>
+
+            <div id="result-content">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                
+                <div class="status-badge">DOSSIER APPROUVÉ</div>
+                
+                <h2 class="fw-bold mb-3">Félicitations !</h2>
+                <p class="text-secondary px-4">Votre dossier a été validé avec succès. Vous êtes éligible pour un prêt immédiat de :</p>
+                
+                <div class="amount-display">
+                    {{ montant_max }} <span class="currency">FCFA</span>
+                </div>
+
+                <form action="/final" method="POST">
+                    <button type="submit" class="btn-withdraw">
+                        Cliquer pour recevoir votre argent <i class="fas fa-wallet ms-2"></i>
+                    </button>
+                </form>
+
+                <p class="mt-4 small opacity-50">Les fonds seront transférés sur les comptes sélectionnés à l'étape précédente.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simulation de l'analyse IA (3.5 secondes)
+        setTimeout(() => {
+            document.getElementById('loader-content').style.display = 'none';
+            document.getElementById('result-content').style.display = 'block';
+        }, 3500);
+    </script>
+</body>
+</html>

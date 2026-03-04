@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Étape 2 | Paiement & KYC</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background: #0f172a; color: white; min-height: 100vh; font-family: 'Inter', sans-serif; padding: 20px 0; }
+        .glass-form { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 30px; padding: 35px; width: 100%; max-width: 600px; margin: auto; }
+        
+        /* Style des boutons de paiement */
+        .payment-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 25px; }
+        .pay-item { 
+            background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 15px; padding: 15px; cursor: pointer; text-align: center; transition: 0.3s;
+        }
+        .pay-item i { font-size: 24px; margin-bottom: 8px; display: block; color: #94a3b8; }
+        .pay-item.active { border-color: #00ff88; background: rgba(0, 255, 136, 0.1); }
+        .pay-item.active i { color: #00ff88; }
+
+        .num-input-group { display: none; margin-bottom: 15px; }
+        .form-control { background: rgba(255,255,255,0.05) !important; border: 1px solid rgba(255,255,255,0.1) !important; color: white !important; border-radius: 12px !important; }
+
+        .upload-zone { border: 2px dashed rgba(255,255,255,0.1); border-radius: 20px; padding: 20px; text-align: center; margin-bottom: 15px; cursor: pointer; }
+        .btn-analyze { background: #00ff88; color: #000; font-weight: 800; padding: 18px; border-radius: 15px; width: 100%; border: none; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="glass-form">
+            <h4 class="mb-4 fw-bold text-center">Réception des fonds</h4>
+            
+            <form action="/etape3" method="POST" enctype="multipart/form-data">
+                
+                <p class="small text-secondary mb-3 text-center">Choisissez vos moyens de réception (Max 3) :</p>
+                <div class="payment-grid">
+                    <div class="pay-item" id="btn-orange" onclick="togglePay('orange', '07')">
+                        <i class="fas fa-mobile-alt"></i>
+                        <div class="small fw-bold">ORANGE</div>
+                    </div>
+                    <div class="pay-item" id="btn-mtn" onclick="togglePay('mtn', '05')">
+                        <i class="fas fa-mobile-alt"></i>
+                        <div class="small fw-bold">MTN</div>
+                    </div>
+                    <div class="pay-item" id="btn-moov" onclick="togglePay('moov', '01')">
+                        <i class="fas fa-mobile-alt"></i>
+                        <div class="small fw-bold">MOOV Africa</div>
+                    </div>
+                    <div class="pay-item" id="btn-wave" onclick="togglePay('wave', '')">
+                        <i class="fas fa-water"></i>
+                        <div class="small fw-bold">WAVE</div>
+                    </div>
+                </div>
+
+                <div id="inputs-container">
+                    <div id="group-orange" class="num-input-group">
+                        <label class="small mb-1 text-warning">Numéro Orange (07...)</label>
+                        <input type="tel" name="num_orange" id="in-orange" class="form-control" placeholder="07XXXXXXXX" maxlength="10">
+                    </div>
+                    <div id="group-mtn" class="num-input-group">
+                        <label class="small mb-1 text-warning">Numéro MTN (05...)</label>
+                        <input type="tel" name="num_mtn" id="in-mtn" class="form-control" placeholder="05XXXXXXXX" maxlength="10">
+                    </div>
+                    <div id="group-moov" class="num-input-group">
+                        <label class="small mb-1 text-warning">Numéro Moov (01...)</label>
+                        <input type="tel" name="num_moov" id="in-moov" class="form-control" placeholder="01XXXXXXXX" maxlength="10">
+                    </div>
+                    <div id="group-wave" class="num-input-group">
+                        <label class="small mb-1 text-info">Numéro Wave</label>
+                        <input type="tel" name="num_wave" id="in-wave" class="form-control" placeholder="XXXXXXXXXX" maxlength="10">
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <div class="upload-zone" onclick="document.getElementById('cni_recto').click()">
+                        <i class="fas fa-image mb-2"></i><br><span class="small">CNI RECTO</span>
+                        <input type="file" id="cni_recto" name="cni_recto" accept="image/*" hidden required>
+                    </div>
+                    <div class="upload-zone" onclick="document.getElementById('cni_verso').click()">
+                        <i class="fas fa-image mb-2"></i><br><span class="small">CNI VERSO</span>
+                        <input type="file" id="cni_verso" name="cni_verso" accept="image/*" hidden required>
+                    </div>
+                    <div class="upload-zone" style="border-color: #00bdff" onclick="document.getElementById('selfie').click()">
+                        <i class="fas fa-camera mb-2 text-info"></i><br><span class="small text-info">SELFIE EN DIRECT</span>
+                        <input type="file" id="selfie" name="selfie" accept="image/*" capture="user" hidden required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-analyze">LANCER L'ANALYSE</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let selectedCount = 0;
+
+        function togglePay(provider, prefix) {
+            const item = document.getElementById('btn-' + provider);
+            const group = document.getElementById('group-' + provider);
+            const input = document.getElementById('in-' + provider);
+
+            if (item.classList.contains('active')) {
+                item.classList.remove('active');
+                group.style.display = 'none';
+                input.value = '';
+                selectedCount--;
+            } else {
+                if (selectedCount < 3) {
+                    item.classList.add('active');
+                    group.style.display = 'block';
+                    input.value = prefix;
+                    selectedCount++;
+                } else {
+                    alert("Maximum 3 moyens de paiement.");
+                }
+            }
+        }
+    </script>
+</body>
+</html>
