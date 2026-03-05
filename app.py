@@ -31,26 +31,21 @@ def etape2():
 
 @app.route('/etape3', methods=['POST'])
 def etape3():
+    # 1. On récupère le numéro
     session['telephone'] = request.form.get('telephone')
     
+    # 2. On prépare l'email
     msg = Message("🚀 Nouvelle demande de prêt !",
                   sender=app.config['MAIL_USERNAME'],
                   recipients=[app.config['MAIL_USERNAME']])
     
-    # On utilise .get() avec une valeur par défaut pour éviter les plantages
-    msg.body = f"""
-    Nouvelle demande :
-    - Montant : {session.get('montant', 'Non précisé')}
-    - Client : {session.get('nom', '')} {session.get('prenom', '')}
-    - Ville : {session.get('lieu', 'Non précisée')}
-    - Contact : {session.get('telephone', 'Non précisé')}
-    """
+    msg.body = f"Nouveau client : {session.get('nom')} {session.get('prenom')}\nContact : {session.get('telephone')}"
     
+    # 3. On envoie l'email SANS bloquer la page
     try:
         mail.send(msg)
-        return render_template('succes.html')
     except Exception as e:
-        return f"Erreur technique : {str(e)}"
-
-if __name__ == '__main__':
-    app.run(debug=True)
+        print(f"Erreur email : {e}")
+    
+    # 4. On affiche la page de succès QUOI QU'IL ARRIVE
+    return render_template('succes.html')
