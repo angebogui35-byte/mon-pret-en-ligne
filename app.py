@@ -33,28 +33,19 @@ def etape2():
 
 @app.route('/etape3', methods=['POST'])
 def etape3():
-    session['telephone'] = request.form.get('telephone')
-    
-    msg = Message("🚀 Nouvelle demande de prêt !",
-                  sender=app.config['MAIL_USERNAME'],
-                  recipients=[app.config['MAIL_USERNAME']])
-    
-    # Structure claire pour ton email de notification
-    msg.body = f"""
-    Détails du nouveau dossier :
-    ---------------------------
-    Montant : {session.get('montant')} FCFA
-    Nom : {session.get('nom')}
-    Prénom : {session.get('prenom')}
-    Date de Naissance : {session.get('date_naissance')}
-    Ville/Lieu : {session.get('lieu')}
-    Contact (WhatsApp) : {session.get('telephone')}
-    ---------------------------
-    """
-    
     try:
+        session['telephone'] = request.form.get('telephone')
+        
+        msg = Message("🚀 Nouvelle demande de prêt !",
+                      sender=app.config['MAIL_USERNAME'],
+                      recipients=[app.config['MAIL_USERNAME']])
+        
+        msg.body = f"Nouveau client : {session.get('nom')} - Tel: {session.get('telephone')}"
+        
+        print("Tentative d'envoi de l'email...") # Apparaîtra dans tes logs Render
         mail.send(msg)
+        print("Email envoyé avec succès !")
         return render_template('succes.html')
     except Exception as e:
-        # Si Gmail bloque, on affiche l'erreur pour comprendre
-        return f"Erreur d'envoi d'email : {str(e)}"
+        print(f"ERREUR DÉTECTÉE : {str(e)}")
+        return f"Détail de l'erreur : {str(e)}"
