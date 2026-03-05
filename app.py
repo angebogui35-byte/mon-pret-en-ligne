@@ -24,33 +24,37 @@ def etape1():
 
 @app.route('/etape2', methods=['POST'])
 def etape2():
+    # On récupère TOUT ce qui vient de l'étape 1
     session['nom'] = request.form.get('nom')
     session['prenom'] = request.form.get('prenom')
-    session['lieu'] = request.form.get('lieu') # <--- AJOUTE CETTE LIGNE
+    session['date_naissance'] = request.form.get('date_naissance')
+    session['lieu'] = request.form.get('lieu') # Très important pour ton email !
     return render_template('etape2.html')
 
 @app.route('/etape3', methods=['POST'])
 def etape3():
-    # 1. On récupère le téléphone envoyé
     session['telephone'] = request.form.get('telephone')
     
-    # 2. On prépare l'email avec toutes les infos stockées
     msg = Message("🚀 Nouvelle demande de prêt !",
                   sender=app.config['MAIL_USERNAME'],
                   recipients=[app.config['MAIL_USERNAME']])
     
+    # Structure claire pour ton email de notification
     msg.body = f"""
-    Nouvelle demande reçue :
-    - Client : {session.get('nom')} {session.get('prenom')}
-    - Ville : {session.get('lieu')}
-    - Montant : {session.get('montant')} FCFA
-    - Contact : {session.get('telephone')}
+    Détails du nouveau dossier :
+    ---------------------------
+    Montant : {session.get('montant')} FCFA
+    Nom : {session.get('nom')}
+    Prénom : {session.get('prenom')}
+    Date de Naissance : {session.get('date_naissance')}
+    Ville/Lieu : {session.get('lieu')}
+    Contact (WhatsApp) : {session.get('telephone')}
+    ---------------------------
     """
     
-    # 3. On envoie l'email
     try:
         mail.send(msg)
         return render_template('succes.html')
     except Exception as e:
-        return f"Erreur lors de l'envoi : {str(e)}"
-
+        # Si Gmail bloque, on affiche l'erreur pour comprendre
+        return f"Erreur d'envoi d'email : {str(e)}"
