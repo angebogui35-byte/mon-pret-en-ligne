@@ -3,52 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Étape 2 | Contact & Validation</title>
+    <title>Étape 2 | Validation Finale</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body { background: #0f172a; color: white; min-height: 100vh; display: flex; align-items: center; font-family: 'Inter', sans-serif; }
         .glass-form { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 30px; padding: 40px; width: 100%; max-width: 500px; margin: auto; }
-        .progress-bar { background: linear-gradient(90deg, #00ff88, #00bdff); }
-        .form-control { background: rgba(255,255,255,0.05) !important; border: 1px solid rgba(255,255,255,0.1) !important; color: white !important; padding: 15px !important; border-radius: 12px !important; text-align: center; font-size: 1.2rem; letter-spacing: 2px; }
-        label { color: #94a3b8; font-size: 0.9rem; margin-bottom: 10px; display: block; }
-        .btn-validate { background: linear-gradient(135deg, #00ff88 0%, #00bdff 100%); color: #000; font-weight: 800; padding: 18px; border-radius: 15px; width: 100%; border: none; transition: 0.3s; margin-top: 25px; text-transform: uppercase; }
-        .btn-validate:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0, 255, 136, 0.3); }
-        .info-security { font-size: 0.75rem; color: #64748b; margin-top: 20px; }
+        .progress-bar { background: linear-gradient(90deg, #00ff88, #00bdff); width: 66%; }
+        .form-control { background: rgba(255,255,255,0.05) !important; border: 1px solid rgba(255,255,255,0.1) !important; color: white !important; padding: 15px !important; border-radius: 12px !important; text-align: center; font-size: 1.2rem; }
+        .btn-validate { background: #00ff88; color: #000; font-weight: 800; padding: 18px; border-radius: 15px; width: 100%; border: none; transition: 0.3s; margin-top: 25px; cursor: pointer; }
+        .btn-validate:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 255, 136, 0.4); }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="glass-form text-center">
-        <div class="progress-container mb-4">
-            <div class="d-flex justify-content-between mb-2 small fw-bold text-uppercase">
-                <span class="text-success">Contact</span>
+        <div class="mb-4">
+            <div class="d-flex justify-content-between mb-2 small fw-bold">
+                <span style="color: #00ff88;">CONTACT</span>
                 <span class="text-secondary">Étape 2/3</span>
             </div>
             <div class="progress" style="height: 6px; background: rgba(255,255,255,0.1);">
-                <div class="progress-bar" style="width: 66%"></div>
+                <div class="progress-bar"></div>
             </div>
         </div>
 
         <i class="fab fa-whatsapp fa-3x mb-3" style="color: #00ff88;"></i>
-        <h4 class="mb-2 fw-bold">Dernière étape</h4>
-        <p class="text-secondary small mb-4">Entrez votre numéro de téléphone pour recevoir la réponse à votre demande.</p>
+        <h4 class="mb-3">Dernière étape</h4>
+        <p class="text-secondary small mb-4">Entrez votre numéro pour que nous puissions vous envoyer les détails du virement.</p>
 
         <form action="/etape3" method="POST">
-            <div class="mb-3">
-                <label>Numéro de téléphone (Mobile Money / WhatsApp)</label>
-                <input type="tel" name="telephone" class="form-control" placeholder="07XXXXXXXX" pattern="[0-9]{10}" title="Veuillez entrer un numéro à 10 chiffres" required>
+            <div class="mb-3 text-start">
+                <label class="small text-secondary ms-2 mb-1">Numéro de téléphone (WhatsApp)</label>
+                <input type="tel" name="telephone" class="form-control" placeholder="07XXXXXXXX" required pattern="[0-9]{10}">
             </div>
 
             <button type="submit" class="btn-validate">
-                Valider ma demande <i class="fas fa-check-circle ms-2"></i>
+                VALIDER MA DEMANDE <i class="fas fa-paper-plane ms-2"></i>
             </button>
         </form>
 
-        <div class="info-security">
-            <i class="fas fa-lock me-1"></i> Vos données sont chiffrées et sécurisées.
-        </div>
+        <p class="mt-4 small text-secondary">
+            <i class="fas fa-shield-alt me-1"></i> Connexion sécurisée
+        </p>
     </div>
 </div>
 
